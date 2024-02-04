@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "stm32f10x.h"
 #include "test_frame.h"
-#include "util/iterators.h"
-#include "util/mem_mana/mem_mana.h"
-#include "util/usart/prints.h"
+#include "utils/iterators.h"
+#include "utils/mem_mana/mem_mana.h"
+#include "utils/usart/prints.h"
 
 LINKER_SYMBOL_TYPE(__stest_cases, __test_case_info_t);
 LINKER_SYMBOL_TYPE(__etest_cases, __test_case_info_t);

@@ -1,9 +1,9 @@
 #include "mem_mana.h"
 #include "mem_conf.h"
 #include "mem_pools.h"
-#include "util/iterators.h"
-#include "util/container_of.h"
-#include "util/linker_tools.h"
+#include "utils/iterators.h"
+#include "utils/container_of.h"
+#include "utils/linker_tools.h"
 
 static uint32_t __mem0__[CONFIG_DEFAULT_POOL_SIZE * 1024 / 4];
 

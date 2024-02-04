@@ -3,7 +3,7 @@
 
 #include "stm32f10x.h"
 #include "test_case_conf.h"
-#include "util/mem_mana/mem_pools.h"
+#include "utils/mem_mana/mem_pools.h"
 
 #include "hash/hash_all_test.h"
 

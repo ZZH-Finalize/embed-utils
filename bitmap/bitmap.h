@@ -4,9 +4,9 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
-#include "util/iterators.h"
-#include "util/arg_checkers.h"
-#include "util/mem_mana/mem_mana.h"
+#include "utils/iterators.h"
+#include "utils/arg_checkers.h"
+#include "utils/mem_mana/mem_mana.h"
 
 #define BITMAP_CHECK_MAP(map, retv) \
     CHECK_PTR(map, retv);           \

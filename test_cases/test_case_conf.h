@@ -1,7 +1,7 @@
 #ifndef __TEST_CASE_CONF_H__
 #define __TEST_CASE_CONF_H__
 
-#include "util/linker_tools.h"
+#include "utils/linker_tools.h"
 
 typedef int (*__test_case_fn_t)(void *arg);
 typedef void (*__demo_fn_t)(void);

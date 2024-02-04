@@ -2,7 +2,7 @@
 #define __TINY_CONSOLE_CMD_H__
 
 #include "tiny_console.h"
-#include "util/gnu_attributes.h"
+#include "utils/gnu_attributes.h"
 
 #define CONSOLE_CMD_DEF(name) \
     int name(console_t* this, const int argc, const console_cmd_arg_t* argv)

@@ -1,5 +1,5 @@
 #include "ringbuf.h"
-#include "util/value_ops.h"
+#include "utils/value_ops.h"
 
 uint32_t ringbuf_write(ringbuf_t* this, void* data, uint32_t size)
 {

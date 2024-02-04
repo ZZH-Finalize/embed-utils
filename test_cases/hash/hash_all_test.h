@@ -2,7 +2,7 @@
 #define __HASH_ALL_TEST_H__
 
 #include "test_cases.h"
-#include "util/hash/str_hash.h"
+#include "utils/hash/str_hash.h"
 
 typedef struct
 {

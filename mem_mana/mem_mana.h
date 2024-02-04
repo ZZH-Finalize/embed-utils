@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "util/gnu_attributes.h"
+#include "utils/gnu_attributes.h"
 #include "mem_pools.h"
 
 #ifdef __cplusplus

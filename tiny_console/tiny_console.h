@@ -5,10 +5,10 @@
 #include <errno.h>
 #include <string.h>
 #include "tiny_console_conf.h"
-#include "util/arg_checkers.h"
-#include "util/gnu_attributes.h"
-#include "util/mem_mana/mem_mana.h"
-#include "util/map/map.h"
+#include "utils/arg_checkers.h"
+#include "utils/gnu_attributes.h"
+#include "utils/mem_mana/mem_mana.h"
+#include "utils/map/map.h"
 
 struct __console_t;
 

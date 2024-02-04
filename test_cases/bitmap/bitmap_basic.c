@@ -1,7 +1,7 @@
 #include "test_frame.h"
 #include "test_cases.h"
 #include "bitmap_test_conf.h"
-#include "util/bitmap/bitmap.h"
+#include "utils/bitmap/bitmap.h"
 
 static int bitmap_basic_test(void *arg)
 {

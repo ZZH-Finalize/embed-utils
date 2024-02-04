@@ -1,9 +1,9 @@
 #include <string.h>
 #include "map.h"
-#include "util/iterators.h"
-#include "util/container_of.h"
-#include "util/linked_list/list_iterators.h"
-#include "util/gnu_attributes.h"
+#include "utils/iterators.h"
+#include "utils/container_of.h"
+#include "utils/linked_list/list_iterators.h"
+#include "utils/gnu_attributes.h"
 
 static map_item_t* search_node(map_item_list_t* item_list, map_key_t key)
 {
