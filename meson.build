@@ -20,17 +20,21 @@ ssmod = import('sourceset')
 # Global informations
 utils_src = ssmod.source_set()
 testcae_src = ssmod.source_set()
+include_directories = include_directories('.')
 
-utils_src.add(files([
-    'bitmap/bitmap.c',
-    'hash/str_hash.c',
-    'map/map.c',
-    'mem_mana/mem_mana.c',
-    'ringbuf/ringbuf.c',
-    'tiny_console/tiny_console.c',
-    'tiny_console/builtin_cmds/help.c',
-    'tiny_console/builtin_cmds/help.c',
-]))
+utils_src.add(declare_dependency(
+    sources: files([
+        'bitmap/bitmap.c',
+        'hash/str_hash.c',
+        'map/map.c',
+        'mem_mana/mem_mana.c',
+        'ringbuf/ringbuf.c',
+        'tiny_console/tiny_console.c',
+        'tiny_console/builtin_cmds/help.c',
+        'tiny_console/builtin_cmds/help.c',
+    ]),
+    include_directories: include_directories
+))
 
 testcae_src.add(
     when: 'embed-utils-tests',
