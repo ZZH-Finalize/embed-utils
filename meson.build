@@ -20,7 +20,12 @@ ssmod = import('sourceset')
 # Global informations
 utils_src = ssmod.source_set()
 testcae_src = ssmod.source_set()
-include_directories = include_directories('.')
+include_directories = include_directories(
+    [
+        '.',
+        'test_cases'
+    ]
+)
 
 utils_src.add(declare_dependency(
     sources: files([
