@@ -1,8 +1,8 @@
 #include "test_frame.h"
-#include "utils/arg_checkers.h"
-#include "utils/hash/str_hash.h"
-#include "utils/map/map.h"
-#include "utils/iterators.h"
+#include "arg_checkers.h"
+#include "hash/str_hash.h"
+#include "map/map.h"
+#include "iterators.h"
 
 #define TEST_DATA_SIZE 32
 

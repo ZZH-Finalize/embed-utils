@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#include "utils/container_of.h"
-#include "utils/arg_checkers.h"
+#include "container_of.h"
+#include "arg_checkers.h"
 #include "list_iterators.h"
 
 #define LL_NEXT_NODE(node) (node)->next

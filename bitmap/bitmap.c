@@ -1,5 +1,5 @@
 #include "bitmap.h"
-#include "utils/value_ops.h"
+#include "value_ops.h"
 
 bitmap_t* bitmap_create_in_pool(uint32_t max_num, uint32_t pool)
 {

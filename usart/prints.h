@@ -2,7 +2,7 @@
 #define __PRINTS_H__
 
 #include "stm32f10x_usart.h"
-#include "utils/gnu_attributes.h"
+#include "gnu_attributes.h"
 
 static inline void print_char(USART_TypeDef* usartx, char ch)
 {

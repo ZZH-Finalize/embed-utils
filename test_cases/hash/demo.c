@@ -1,6 +1,6 @@
 #include "hash_all_test.h"
-#include "utils/iterators.h"
-#include "utils/usart/prints.h"
+#include "iterators.h"
+#include "usart/prints.h"
 
 static hash_func_table_t hash_funcs[] = {
     {"bkdr_hash", bkdr_hash},

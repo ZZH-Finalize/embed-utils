@@ -2,11 +2,11 @@
 #include <stdarg.h>
 #include "tiny_console.h"
 #include "tiny_console_cmd.h"
-#include "utils/mem_mana/mem_mana.h"
-#include "utils/value_ops.h"
-#include "utils/iterators.h"
-#include "utils/linker_tools.h"
-#include "utils/strarg.h"
+#include "mem_mana/mem_mana.h"
+#include "value_ops.h"
+#include "iterators.h"
+#include "linker_tools.h"
+#include "strarg.h"
 
 void console_register_all_cmds(console_t* this)
 {

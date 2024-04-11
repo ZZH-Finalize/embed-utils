@@ -2,7 +2,7 @@
 #define __LINKER_TOOLS_H__
 
 #include <stdint.h>
-#include "utils/gnu_attributes.h"
+#include "gnu_attributes.h"
 
 #define LINKER_SYMBOL_TYPE(sym, type) extern type sym[]
 #define LINKER_SYMBOL8(sym)           LINKER_SYMBOL_TYPE(sym, uint8_t)

@@ -3,8 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "utils/arg_checkers.h"
-#include "utils/mem_mana/mem_mana.h"
+#include "arg_checkers.h"
+#include "mem_mana/mem_mana.h"
 
 #define RB_CHECK(cond, retv)          RETURN_IF(cond, retv)
 #define RB_CHECK_POINTER(ptr, retv)   RB_CHECK(NULL == ptr, retv)

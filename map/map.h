@@ -2,9 +2,9 @@
 #define __MAP_H__
 
 #include <stdint.h>
-#include "utils/linked_list/linked_list.h"
-#include "utils/mem_mana/mem_mana.h"
-#include "utils/hash/str_hash.h"
+#include "linked_list/linked_list.h"
+#include "mem_mana/mem_mana.h"
+#include "hash/str_hash.h"
 
 typedef const char* map_key_t;
 typedef size_t map_value_t;
