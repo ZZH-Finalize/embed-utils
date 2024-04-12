@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "stm32f10x.h"
 #include "test_frame.h"
 #include "iterators.h"
 #include "mem_mana/mem_mana.h"

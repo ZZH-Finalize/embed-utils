@@ -37,6 +37,8 @@ utils_src.add(declare_dependency(
         'tiny_console/tiny_console.c',
         'tiny_console/builtin_cmds/help.c',
         'tiny_console/builtin_cmds/help.c',
+        'strarg.c',
+        'value_ops.c'
     ]),
     include_directories: include_directories
 ))
@@ -51,11 +53,24 @@ testcae_src.add(
         'test_cases/map/map_detete_clear_test.c',
         'test_cases/map/map_duplcate_key.c',
         'test_cases/map/map_test_data.c',
-    ]),
-    if_false: disabler()
+    ])
 )
 
-utils_src = utils_src.apply({})
+# testcae_src.add(declare_dependency(
+#         sources: files([
+#             'test_cases/test_frame.c',
+#             'test_cases/bitmap/bitmap_basic.c',
+#             'test_cases/bitmap/bitmap_clear.c',
+#             'test_cases/map/map_basic_test.c',
+#             'test_cases/map/map_detete_clear_test.c',
+#             'test_cases/map/map_duplcate_key.c',
+#             'test_cases/map/map_test_data.c',
+#         ])
+#     )
+# )
+
+utils_src.add_all(testcae_src)
+utils_src = utils_src.apply({}, strict: false)# how to get this cfg data?
 
 # exe = executable(
 #     exe_name,
@@ -72,17 +87,9 @@ lib = static_library('embed-utils',
     build_by_default: true,
     sources: utils_src.sources(),
     dependencies: utils_src.dependencies(),
-    c_args: [
-        '-fdata-sections',
-        '-ffunction-sections',
-    ],
-    link_args: [
-        '-Wl,--gc-sections',
-        '-lm',
-    ]
 )
 
-utils_lib_dep = declare_dependency(
+embed_utils_dep = declare_dependency(
     link_with: lib,
     include_directories: include_directories
 )
