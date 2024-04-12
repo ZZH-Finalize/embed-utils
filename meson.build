@@ -68,7 +68,7 @@ utils_src = utils_src.apply({})
 #     link_args: target_link_args
 # )
 
-static_library('embed-utils',
+lib = static_library('embed-utils',
     build_by_default: true,
     sources: utils_src.sources(),
     dependencies: utils_src.dependencies(),
@@ -80,5 +80,10 @@ static_library('embed-utils',
         '-Wl,--gc-sections',
         '-lm',
     ]
+)
+
+utils_lib_dep = declare_dependency(
+    link_with: lib,
+    include_directories: include_directories
 )
 
