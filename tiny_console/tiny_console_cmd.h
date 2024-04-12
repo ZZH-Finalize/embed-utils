@@ -5,7 +5,7 @@
 #include "gnu_attributes.h"
 
 #define CONSOLE_CMD_DEF(name) \
-    int name(console_t* this, const int argc, const console_cmd_arg_t* argv)
+    static int name(console_t* this, const int argc, const console_cmd_arg_t* argv)
 
 #define CONSOLE_CMD_UNUSE_ARGS \
     (void) this;               \

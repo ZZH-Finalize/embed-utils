@@ -3,7 +3,7 @@ project('embed-utils', 'c',
     license: 'GPL-3.0',
     license_files: 'LICENSE',
     default_options: {
-        'warning_level': '3',
+        'warning_level': 'everything',
         'c_std': 'gnu17'
     }
 )
