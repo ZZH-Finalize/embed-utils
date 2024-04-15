@@ -3,7 +3,13 @@
 
 #include "linker_tools.h"
 
-typedef int (*__test_case_fn_t)(void *arg);
+typedef struct
+{
+    int (*print)(const char* fmt, ...);
+    void* args;
+} test_case_arg_t;
+
+typedef int (*__test_case_fn_t)(test_case_arg_t *arg);
 typedef void (*__demo_fn_t)(void);
 
 typedef struct

@@ -4,7 +4,8 @@ project('embed-utils', 'c',
     license_files: 'LICENSE',
     default_options: {
         'warning_level': 'everything',
-        'c_std': 'gnu17'
+        'c_std': 'gnu17',
+        'buildtype': 'debug'
     }
 )
 
@@ -20,15 +21,13 @@ ssmod = import('sourceset')
 # Global informations
 utils_src = ssmod.source_set()
 testcae_src = ssmod.source_set()
-include_directories = include_directories(
-    [
+include_directories = include_directories([
         '.',
         'test_cases'
     ]
 )
 
-utils_src.add(declare_dependency(
-    sources: files([
+utils_src.add(files(
         'bitmap/bitmap.c',
         'hash/str_hash.c',
         'map/map.c',
@@ -36,41 +35,30 @@ utils_src.add(declare_dependency(
         'ringbuf/ringbuf.c',
         'tiny_console/tiny_console.c',
         'tiny_console/builtin_cmds/help.c',
-        'tiny_console/builtin_cmds/help.c',
         'strarg.c',
-        'value_ops.c'
-    ]),
-    include_directories: include_directories
-))
+        'value_ops.c',
+    ),
+)
 
 testcae_src.add(
     when: 'embed-utils-tests',
-    if_true: files([
-        'test_cases/test_frame.c',
+    if_true: files(
         'test_cases/bitmap/bitmap_basic.c',
         'test_cases/bitmap/bitmap_clear.c',
         'test_cases/map/map_basic_test.c',
         'test_cases/map/map_detete_clear_test.c',
         'test_cases/map/map_duplcate_key.c',
         'test_cases/map/map_test_data.c',
-    ])
+        'test_cases/test_frame.c',
+    ),
 )
 
-# testcae_src.add(declare_dependency(
-#         sources: files([
-#             'test_cases/test_frame.c',
-#             'test_cases/bitmap/bitmap_basic.c',
-#             'test_cases/bitmap/bitmap_clear.c',
-#             'test_cases/map/map_basic_test.c',
-#             'test_cases/map/map_detete_clear_test.c',
-#             'test_cases/map/map_duplcate_key.c',
-#             'test_cases/map/map_test_data.c',
-#         ])
-#     )
-# )
+ss_configs = {
+    'embed-utils-tests': get_option('embed-utils-tests')
+}
 
 utils_src.add_all(testcae_src)
-utils_src = utils_src.apply({}, strict: false)# how to get this cfg data?
+utils_src = utils_src.apply(ss_configs)
 
 # exe = executable(
 #     exe_name,
@@ -87,10 +75,15 @@ lib = static_library('embed-utils',
     build_by_default: true,
     sources: utils_src.sources(),
     dependencies: utils_src.dependencies(),
+    include_directories: include_directories
 )
 
 embed_utils_dep = declare_dependency(
     link_with: lib,
-    include_directories: include_directories
+    include_directories: include_directories,
 )
 
+embed_utils_whole_dep = declare_dependency(
+    link_whole: lib,
+    include_directories: include_directories,
+)

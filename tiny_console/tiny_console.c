@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdarg.h>
 #include "tiny_console.h"
 #include "tiny_console_cmd.h"
 #include "mem_mana/mem_mana.h"
@@ -7,6 +6,7 @@
 #include "iterators.h"
 #include "linker_tools.h"
 #include "strarg.h"
+#include "builtin_cmds/builtin_cmds.h"
 
 void console_register_all_cmds(console_t* this)
 {
@@ -137,13 +137,10 @@ void console_display_prefix(console_t* this)
     console_send_char(this, ' ');
 }
 
-int console_printf(console_t* this, const char* fmt, ...)
+int console_vprintf(console_t* this, const char* fmt, va_list vargs)
 {
     CHECK_PTR(this, -EINVAL);
     CHECK_PTR(fmt, -EINVAL);
-
-    va_list vargs;
-    va_start(vargs, fmt);
 
     console_flush(this);
 
@@ -155,6 +152,16 @@ int console_printf(console_t* this, const char* fmt, ...)
 
     if (len == (int) txbuf_free_size)
         console_flush(this);
+
+    return len;
+}
+
+int console_printf(console_t* this, const char* fmt, ...)
+{
+    va_list vargs;
+    va_start(vargs, fmt);
+
+    int len = console_vprintf(this, fmt, vargs);
 
     va_end(vargs);
 
@@ -336,7 +343,7 @@ static inline void console_update_normal(console_t* this, char ch)
             if (this->rx_idx > 1) {
                 console_send_strln(this, "");
                 this->last_ret_v = console_execute(this);
-                if (this->last_ret_v == -ENODEV) {
+                if (this->last_ret_v == -EEXIST) {
                     // this->rxbuf[this->rx_idx - 1] = '\0';
                     console_send_str(this, this->rxbuf);
                     console_send_str(this, ": no such command");

@@ -1,6 +1,6 @@
 #include "map_test_data.h"
 
-static int map_delete_test(void *arg)
+static int map_delete_test(test_case_arg_t *arg)
 {
     (void) arg;
 

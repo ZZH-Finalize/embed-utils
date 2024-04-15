@@ -4,7 +4,8 @@
 #include "tiny_console.h"
 #include "gnu_attributes.h"
 
-#define CONSOLE_CMD_DEF(name) \
+#define CONSOLE_CMD_DEF(name)                        \
+    GNU_USED                                         \
     static int name(console_t* this, const int argc, const console_cmd_arg_t* argv)
 
 #define CONSOLE_CMD_UNUSE_ARGS \
@@ -16,12 +17,12 @@
 #define CONSOLE_BUILTIN_CMD_SECTION .console.builtin.cmd
 
 #define EXPORT_CONSOLE_CMD_IN_SEC(sec, _cmd, _fn, _desc, _arg_desc, ...) \
-    GNU_SECTION(sec)                                                     \
-    const console_cmd_desc_t __console_cmd_desc_##_fn = {                \
+    GNU_USED_SECTION(sec)                                                \
+    static const console_cmd_desc_t __console_cmd_desc_##_fn = {         \
         .cmd = _cmd,                                                     \
         .desc = _desc,                                                   \
         .fn = _fn,                                                       \
-        .arg_desc = _arg_desc,                                            \
+        .arg_desc = _arg_desc,                                           \
         ##__VA_ARGS__,                                                   \
     }
 

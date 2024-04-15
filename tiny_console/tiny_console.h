@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <string.h>
+#include <stdarg.h>
 #include "tiny_console_conf.h"
 #include "arg_checkers.h"
 #include "gnu_attributes.h"
@@ -84,6 +85,7 @@ static inline int console_flush(console_t* this)
 int console_send_str(console_t* this, const char* str);
 int console_send_char(console_t* this, const char ch);
 int console_printf(console_t* this, const char* fmt, ...) GNU_PRINTF(2, 3);
+int console_vprintf(console_t* this, const char* fmt, va_list vargs);
 
 #define console_send_strln(this, str) console_send_str(this, str "\r\n")
 #define console_println(this, fmt, ...) \

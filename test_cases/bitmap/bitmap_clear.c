@@ -3,7 +3,7 @@
 #include "bitmap_test_conf.h"
 #include "bitmap/bitmap.h"
 
-static int bitmap_clear_test(void *arg)
+static int bitmap_clear_test(test_case_arg_t *arg)
 {
     (void) arg;
     int retv = -ENOMEM;
