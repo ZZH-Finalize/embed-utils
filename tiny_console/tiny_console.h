@@ -110,9 +110,9 @@ void console_display_prefix(console_t* this);
 typedef union
 {
     const void* vp;
-    const uint32_t unum;
-    const int32_t num;
-    const float fnum;
+    uint32_t unum;
+    int32_t num;
+    float fnum;
     const char* str;
 } console_cmd_arg_t;
 
@@ -134,6 +134,8 @@ static inline int console_register_command(console_t* this,
 {
     CHECK_PTR(this, -EINVAL);
     CHECK_PTR(desc, -EINVAL);
+    CHECK_PTR(desc->cmd, -EINVAL);
+    CHECK_PTR(desc->fn, -EINVAL);
 
     return map_insert(this->command_table, desc->cmd, (size_t) desc);
 }

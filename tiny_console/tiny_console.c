@@ -201,21 +201,34 @@ static int parse_arg_desc(const char* arg_desc, uint32_t* min_arg_num,
     uint32_t optional_arg_num = 0;
     uint32_t* counter = &arg_num;
 
+    bool end_flag = 0;
+
     while (*arg_desc) {
         switch (*arg_desc) {
-            case 'd': // number
+            case 'd': // unsigned number
+            case 'i': // signed number
+            case 'f': // floating point number
             case 's': // string
+                if (1 == end_flag)
+                    goto err;
+
                 (*counter)++;
                 break;
 
             case '[': // switch to optional_arg
+                if (1 == end_flag)
+                    goto err;
                 counter = &optional_arg_num;
                 break;
 
-            case ']': // end of parse
-                goto done;
+            case ']': // end of optional_arg
+                      // goto done;
+                end_flag = 1;
+                break;
 
-            case 'f': return -ENOTSUP;
+            case '+': // inf arg
+                optional_arg_num = UINT32_MAX - arg_num;
+                goto done;
 
             default: return -EINVAL;
         }
@@ -227,6 +240,10 @@ done:
     *min_arg_num = arg_num;
     *max_arg_num = arg_num + optional_arg_num;
     return 0;
+err:
+    *min_arg_num = 0;
+    *max_arg_num = 0;
+    return -EINVAL;
 }
 
 static int console_execute(console_t* this)
@@ -253,7 +270,7 @@ static int console_execute(console_t* this)
     RETURN_IF_NZERO(parse_res, parse_res);
 
     if (arg_num > max_arg_num || arg_num < min_arg_num) {
-        console_println(this, "arg num error: %ld give, needs [%ld - %ld]",
+        console_println(this, "arg num error: %ld give, needs [%lu - %ld]",
                         arg_num, min_arg_num, max_arg_num);
         return -EINVAL;
     }
@@ -271,14 +288,17 @@ static int console_execute(console_t* this)
         }
 
         char* cur_arg = first_arg;
-        const char* arg_type = cmd_desc->arg_desc;
+        const char* arg_types = cmd_desc->arg_desc;
 
         FOR_I (arg_num) {
             // skip optional symbol
-            while ('[' == *arg_type) arg_type++;
+            if ('[' == *arg_types || ']' == *arg_types)
+                arg_types++;
 
             // convert arg by type
-            switch (*arg_type++) {
+            switch (*arg_types) {
+                case 'f':
+                case 'i':// todo: should use new method
                 case 'd': {
                     int conv_res =
                         getNum(cur_arg, (uint32_t*) &arg_arr[i].unum);
@@ -292,6 +312,7 @@ static int console_execute(console_t* this)
                     break;
                 }
 
+                case '+':
                 case 's': {
                     arg_arr[i].str = cur_arg;
                     break;
@@ -299,6 +320,9 @@ static int console_execute(console_t* this)
 
                 default: break;
             }
+
+            if ('+' != *arg_types)
+                arg_types++;
 
             // skip next chars
             while ('\0' != *cur_arg) cur_arg++;

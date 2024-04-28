@@ -9,6 +9,11 @@ project('embed-utils', 'c',
     }
 )
 
+# Get toolchain
+# objcopy_tool = find_program('objcopy')
+objdump_tool = find_program('objdump')
+size_tool = find_program('size')
+
 # Project informations
 proj_name = meson.project_name()
 src_dir = meson.current_source_dir()
@@ -16,6 +21,7 @@ build_dir = meson.current_build_dir()
 exe_sufix = meson.get_external_property('exe_sufix', 'elf')
 
 # Import modules
+fs = import('fs')
 ssmod = import('sourceset')
 
 # Global informations
@@ -54,28 +60,68 @@ testcae_src.add(
 )
 
 ss_configs = {
-    'embed-utils-tests': get_option('embed-utils-tests')
+    'embed-utils-tests': get_option('embed-utils-tests'),
+    'native': get_option('native')
 }
+
+ld_dep = declare_dependency(
+    link_args: [
+        '-T' + files('linker.ld')[0].full_path(),
+        '-Wl,-Map,memory.map'
+    ]
+)
+
+utils_src.add(
+    when: 'native',
+    if_true: ld_dep
+)
+
+utils_src.add(
+    declare_dependency(
+        compile_args: '-Wno-c++-compat'
+    )
+)
 
 utils_src.add_all(testcae_src)
 utils_src = utils_src.apply(ss_configs)
-
-# exe = executable(
-#     exe_name,
-#     link_depends: lds,
-#     name_suffix: exe_sufix,
-#     sources: target_srcs.sources(),
-#     include_directories: target_incs,
-#     dependencies: target_srcs.dependencies(),
-#     c_args: target_c_args,
-#     link_args: target_link_args
-# )
 
 lib = static_library('embed-utils',
     build_by_default: true,
     sources: utils_src.sources(),
     dependencies: utils_src.dependencies(),
     include_directories: include_directories
+)
+
+exe = executable(
+    'main',
+    link_whole: lib,
+    # name_suffix: exe_sufix,
+    sources: [
+        'main.c'
+    ],
+    native: true,
+    # dependencies: utils_src.dependencies(),
+)
+
+dis = custom_target(
+    'main' + '_dis',
+    depends: exe,
+    capture: true,
+    command: [
+        objdump_tool.full_path(),
+        '-SD',
+        exe.full_path()
+    ],
+    output: fs.replace_suffix(exe.name(), '.s')
+)
+
+run_target(
+    'main' + '_size',
+    depends: dis,
+    command: [
+        size_tool.full_path(),
+        exe.full_path(),
+    ]
 )
 
 embed_utils_dep = declare_dependency(
