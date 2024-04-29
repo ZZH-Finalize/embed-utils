@@ -280,8 +280,9 @@ static int console_execute(console_t* this)
     RETURN_IF_NZERO(parse_res, parse_res);
 
     if (arg_num > max_arg_num || arg_num < min_arg_num) {
-        console_println(this, "arg num error: %ld give, needs [%lu - %ld]",
-                        arg_num, min_arg_num, max_arg_num);
+        console_printf(this, "arg num error: ");
+        console_printf(this, "%ld give, ", arg_num);
+        console_println(this, "needs [%lu - %ld]", min_arg_num, max_arg_num);
         return -EINVAL;
     }
 

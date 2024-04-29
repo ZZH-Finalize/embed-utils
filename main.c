@@ -35,6 +35,7 @@ const char *test_cases[] = {
     // \b test
     "printf 4\b6 5\r",
     "\b\b\b\b\b\b\b",
+    "printf\r",
 };
 
 int main(const int argc, const char **argv)
@@ -51,7 +52,7 @@ int main(const int argc, const char **argv)
         .fn = __printf,
     };
 
-    console_t *this = console_create(128, console_write, "zzh@ZZH-WORK");
+    console_t *this = console_create(32, console_write, "zzh@ZZH-WORK");
     console_register_command(this, &desc);
     console_display_prefix(this);
     console_flush(this);

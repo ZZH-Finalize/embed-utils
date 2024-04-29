@@ -99,7 +99,7 @@ exe = executable(
     sources: [
         'main.c'
     ],
-    native: true,
+    # native: true,
     # dependencies: utils_src.dependencies(),
 )
 
