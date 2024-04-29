@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "tiny_console/tiny_console.h"
+#include <string.h>
 #include "iterators.h"
+#include "tiny_console/tiny_console.h"
 #include "tiny_console/tiny_console_cmd.h"
 
 void memInit(void);
@@ -24,6 +25,18 @@ CONSOLE_CMD_DEF(__printf)
     return 0;
 }
 
+const char *test_cases[] = {
+    // single command and multiple slices
+    "printf 46 5\r", "prin", "tf 4", "6 5 1\b134\r",
+
+    // multiple commands and multiple slices
+    "abc\rdef\r", "eh", "c\rdef\r",
+
+    // \b test
+    "printf 4\b6 5\r",
+    "\b\b\b\b\b\b\b",
+};
+
 int main(const int argc, const char **argv)
 {
     (void) argc;
@@ -43,8 +56,14 @@ int main(const int argc, const char **argv)
     console_display_prefix(this);
     console_flush(this);
 
-    while (1) {
-        console_input_char(this, (char) getchar());
+    // this->flags.bits.echo = 0;
+
+    ITER_ARRAY (iter, test_cases) {
+        size_t len = strlen(*iter);
+        FOR_I (len) {
+            console_input_char(this, (*iter)[i]);
+        }
+
         console_update(this);
     }
 

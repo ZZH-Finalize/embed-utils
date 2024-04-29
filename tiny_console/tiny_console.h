@@ -39,15 +39,26 @@ typedef struct __console_t
 {
     const char *prefix, *cwd;
     uint32_t buffer_size;
-    uint32_t mem_pool;
     console_state_t current_state;
     int last_ret_v;
 
     console_out_t write;
     map_t* command_table;
-    char *rxbuf, *txbuf;
+    char *rxbuf, *txbuf, *cmdbuf;
     uint32_t rx_idx, tx_idx;
-    uint32_t last_rx_idx;
+    uint32_t mem_pool;
+    uint32_t cur_idx;
+
+    union
+    {
+        struct
+        {
+            uint32_t echo : 1;
+            uint32_t color : 1;
+        } bits;
+
+        uint32_t value;
+    } flags;
 } console_t;
 
 int console_init(console_t* this, uint32_t buffer_size, console_out_t output_fn,
@@ -69,6 +80,7 @@ static inline void console_delete(console_t* this)
     map_delete(this->command_table);
     memFree(this->txbuf);
     memFree(this->rxbuf);
+    memFree(this->cmdbuf);
     memFree(this);
 }
 

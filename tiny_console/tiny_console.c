@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include "tiny_console.h"
+#include "arg_checkers.h"
 #include "tiny_console_cmd.h"
 #include "mem_mana/mem_mana.h"
+#include "tiny_console_conf.h"
 #include "value_ops.h"
 #include "iterators.h"
 #include "linker_tools.h"
@@ -25,18 +27,8 @@ int console_init(console_t* this, uint32_t buffer_size, console_out_t output_fn,
                  const char* prefix)
 {
     CHECK_PTR(this, -EINVAL);
-    RETURN_IF_NZERO(this->rxbuf, -EBUSY);
-    RETURN_IF_NZERO(this->txbuf, -EBUSY);
-    RETURN_IF_NZERO(this->command_table, -EBUSY);
-
-    this->command_table = map_create_in_pool(31, bkdr_hash, this->mem_pool);
-    CHECK_PTR(this->command_table, -ENOMEM);
-
-    this->rxbuf = memAlloc(buffer_size, this->mem_pool);
-    CHECK_PTR_GOTO(this->rxbuf, rxbuf_err);
-
-    this->txbuf = memAlloc(buffer_size, this->mem_pool);
-    CHECK_PTR_GOTO(this->txbuf, txbuf_err);
+    CHECK_PTR(output_fn, -EINVAL);
+    RETURN_IF_ZERO(buffer_size, -EINVAL);
 
     this->buffer_size = buffer_size;
     this->prefix = prefix;
@@ -44,18 +36,15 @@ int console_init(console_t* this, uint32_t buffer_size, console_out_t output_fn,
     this->write = output_fn;
     this->rx_idx = 0;
     this->tx_idx = 0;
-    this->last_rx_idx = 0;
     this->current_state = console_state_normal;
+
+    // set flags default value
+    this->flags.bits.echo = 1;
+    this->flags.bits.color = 1;
 
     console_register_all_cmds(this);
 
     return 0;
-
-txbuf_err:
-    memFree(this->rxbuf);
-rxbuf_err:
-    map_delete(this->command_table);
-    return -ENOMEM;
 }
 
 console_t* console_create_in_pool(uint32_t buffer_size, console_out_t output_fn,
@@ -69,14 +58,35 @@ console_t* console_create_in_pool(uint32_t buffer_size, console_out_t output_fn,
 
     this->mem_pool = pool;
 
+    this->command_table =
+        map_create_in_pool(CONSOLE_MAX_HASH, CONSOLE_HASH_METHOD, pool);
+    CHECK_PTR_GOTO(this->command_table, map_err);
+
+    this->rxbuf = memAlloc(buffer_size, pool);
+    CHECK_PTR_GOTO(this->rxbuf, rxbuf_err);
+
+    this->txbuf = memAlloc(buffer_size, pool);
+    CHECK_PTR_GOTO(this->txbuf, txbuf_err);
+
+    this->cmdbuf = memAlloc(buffer_size, pool);
+    CHECK_PTR_GOTO(this->cmdbuf, cmdbuf_err);
+
     int retv = console_init(this, buffer_size, output_fn, prefix);
 
-    if (0 != retv) {
-        console_delete(this);
-        return NULL;
-    }
+    GOTO_IF(retv < 0, console_err);
 
     return this;
+
+console_err:
+cmdbuf_err:
+    memFree(this->txbuf);
+txbuf_err:
+    memFree(this->rxbuf);
+rxbuf_err:
+    map_delete(this->command_table);
+map_err:
+    console_delete(this);
+    return NULL;
 }
 
 int console_send_char(console_t* this, const char ch)
@@ -251,7 +261,7 @@ static int console_execute(console_t* this)
     console_cmd_arg_t* arg_arr = NULL;
     uint32_t arg_num = 0;
 
-    char* first_arg = strchr(this->rxbuf, ' ');
+    char* first_arg = strchr(this->cmdbuf, ' ');
 
     arg_num = parse_arg_num(first_arg);
 
@@ -261,7 +271,7 @@ static int console_execute(console_t* this)
 
     console_cmd_desc_t* cmd_desc = NULL;
     int search_res =
-        map_search(this->command_table, this->rxbuf, (map_value_t*) &cmd_desc);
+        map_search(this->command_table, this->cmdbuf, (map_value_t*) &cmd_desc);
     RETURN_IF(search_res < 0, search_res);
 
     uint32_t min_arg_num = 0, max_arg_num = 0;
@@ -298,7 +308,7 @@ static int console_execute(console_t* this)
             // convert arg by type
             switch (*arg_types) {
                 case 'f':
-                case 'i':// todo: should use new method
+                case 'i': // todo: should use new method
                 case 'd': {
                     int conv_res =
                         getNum(cur_arg, (uint32_t*) &arg_arr[i].unum);
@@ -347,35 +357,33 @@ static inline void console_update_normal(console_t* this, char ch)
     switch (ch) {
         case '\b':
         case '\177':
-            if (this->rx_idx < 2) {
-                this->rx_idx--;
+            if (0 == this->cur_idx)
                 break;
-            }
 
             console_send_char(this, '\b');
-            this->rx_idx -= 2;
+            this->cur_idx -= 1;
 
             if ('\177' == ch) {
                 console_send_str(this, "\033[J");
-                this->rxbuf[this->rx_idx] = '\0';
+                this->cmdbuf[this->cur_idx] = '\0';
             }
             break;
 
         case '\r':
-            this->rxbuf[this->rx_idx - 1] = '\0';
+            this->cmdbuf[this->cur_idx] = '\0';
 
-            if (this->rx_idx > 1) {
+            if (this->cur_idx > 1) {
                 console_send_strln(this, "");
                 this->last_ret_v = console_execute(this);
                 if (this->last_ret_v == -EEXIST) {
                     // this->rxbuf[this->rx_idx - 1] = '\0';
-                    console_send_str(this, this->rxbuf);
+                    console_send_str(this, this->cmdbuf);
                     console_send_str(this, ": no such command");
                 }
             }
 
-            this->rx_idx = 0;
-            this->rxbuf[0] = '\0';
+            this->cur_idx = 0;
+            this->cmdbuf[0] = '\0';
             console_send_strln(this, "");
             console_display_prefix(this);
             break;
@@ -383,26 +391,25 @@ static inline void console_update_normal(console_t* this, char ch)
         /* ignore list */
         case '\n':
         case '\t':
-        case '\026': this->rx_idx--; break;
+        case '\026': break;
 
         // up arrow is \033A down \033B right \033C left \033D
-        case '\033':
-            this->rx_idx--;
-            this->current_state = console_state_033;
-            break;
+        case '\033': this->current_state = console_state_033; break;
 
         default:
-            if (this->rx_idx >= this->buffer_size) {
+            if (this->cur_idx >= this->buffer_size) {
                 console_send_strln(this,
                                    "console buffer full, drop previous data");
-                this->rx_idx = 0;
-                this->rxbuf[this->rx_idx] = '\0';
+                this->cur_idx = 0;
+                this->cmdbuf[0] = '\0';
                 console_display_prefix(this);
                 console_flush(this);
                 return;
-            } else {
+            } else if (1 == this->flags.bits.echo) {
                 console_send_char(this, ch);
             }
+
+            this->cmdbuf[this->cur_idx++] = ch;
             break;
     }
 }
@@ -438,7 +445,7 @@ static inline void console_update_033(console_t* this, char ch)
     if (true == exit_033)
         this->current_state = console_state_normal;
 
-    this->rx_idx--;
+    this->cur_idx--;
 }
 
 void console_update(console_t* this)
@@ -446,11 +453,11 @@ void console_update(console_t* this)
     CHECK_PTR(this, );
 
     // should be the recived len
-    uint32_t recived_len = this->rx_idx - this->last_rx_idx;
+    uint32_t recived_len = this->rx_idx;
     RETURN_IF_ZERO(recived_len, );
 
     FOR_I (recived_len) {
-        char ch = this->rxbuf[this->rx_idx + i - 1];
+        char ch = this->rxbuf[i];
 
         switch (this->current_state) {
             case console_state_normal: console_update_normal(this, ch); break;
@@ -461,6 +468,8 @@ void console_update(console_t* this)
         }
     }
 
-    this->last_rx_idx = this->rx_idx;
+    this->rx_idx = 0;
+    this->rxbuf[0] = '\0';
+
     console_flush(this);
 }
