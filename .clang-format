@@ -41,7 +41,7 @@ BreakBeforeBraces: Custom
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
-AllowShortLoopsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
 BreakAfterAttributes: Always # valid in ver.16
 AttributeMacros: [
   '__capability',

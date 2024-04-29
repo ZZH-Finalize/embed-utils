@@ -124,7 +124,7 @@ typedef union
     const void* vp;
     uint32_t unum;
     int32_t num;
-    float fnum;
+    double fnum;
     const char* str;
 } console_cmd_arg_t;
 

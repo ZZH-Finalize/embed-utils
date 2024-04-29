@@ -39,7 +39,15 @@ uint8_t IsVaildNum(const char* str);
 @param pNum 转换输出
 @return 转换结果 0-转换失败 1-转换成功
 */
-uint8_t getNum(const char* str, uint32_t* const pNum);
+uint8_t getNum(const char* str, void* const pNum);
+
+/*
+@brief 将字符串转为浮点数
+@param str 待转换的字符串
+@param pNum 转换输出
+@return 转换结果 0-转换失败 1-转换成功
+*/
+uint8_t getDouble(const char* str, double* const pNum);
 
 /*
 @brief 寻找数字里第一个为1的二进制位

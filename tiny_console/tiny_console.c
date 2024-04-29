@@ -85,7 +85,7 @@ txbuf_err:
 rxbuf_err:
     map_delete(this->command_table);
 map_err:
-    console_delete(this);
+    memFree(this);
     return NULL;
 }
 
@@ -215,8 +215,8 @@ static int parse_arg_desc(const char* arg_desc, uint32_t* min_arg_num,
 
     while (*arg_desc) {
         switch (*arg_desc) {
-            case 'd': // unsigned number
-            case 'i': // signed number
+            case 'u': // unsigned number
+            case 'd': // signed number
             case 'f': // floating point number
             case 's': // string
                 if (1 == end_flag)
@@ -308,11 +308,9 @@ static int console_execute(console_t* this)
 
             // convert arg by type
             switch (*arg_types) {
-                case 'f':
-                case 'i': // todo: should use new method
+                case 'u':
                 case 'd': {
-                    int conv_res =
-                        getNum(cur_arg, (uint32_t*) &arg_arr[i].unum);
+                    int conv_res = getNum(cur_arg, &arg_arr[i].unum);
 
                     if (1 != conv_res) {
                         console_send_strln(this, "arg format error");
@@ -320,6 +318,17 @@ static int console_execute(console_t* this)
                         return -EINVAL;
                     }
 
+                    break;
+                }
+
+                case 'f': {
+                    int conv_res = getDouble(cur_arg, &arg_arr[i].fnum);
+
+                    if (1 != conv_res) {
+                        console_send_strln(this, "arg format error");
+                        memFree(arg_arr);
+                        return -EINVAL;
+                    }
                     break;
                 }
 
@@ -336,7 +345,8 @@ static int console_execute(console_t* this)
                 arg_types++;
 
             // skip next chars
-            while ('\0' != *cur_arg) cur_arg++;
+            while ('\0' != *cur_arg)
+                cur_arg++;
 
             // skip \0
             cur_arg++;
