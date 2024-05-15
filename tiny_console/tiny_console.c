@@ -310,6 +310,10 @@ static int console_execute(console_t* this)
         const char* arg_types = cmd_desc->arg_desc;
 
         FOR_I (arg_num) {
+            // skip \0
+            while ('\0' == *cur_arg)
+                cur_arg++;
+
             // skip optional symbol
             if ('[' == *arg_types || ']' == *arg_types)
                 arg_types++;
@@ -354,10 +358,6 @@ static int console_execute(console_t* this)
 
             // skip next chars
             while ('\0' != *cur_arg)
-                cur_arg++;
-
-            // skip \0
-            while ('\0' == *cur_arg)
                 cur_arg++;
         }
     }

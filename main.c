@@ -64,6 +64,7 @@ const char *test_cases[] = {
     "\b\b\b\b\b\b\b",
     "printf\r",
     "printf 5 5 5 abc \"ab cde fg\" 456 \"123\"\"456\"\r",
+    "printf      1    2 3  \"sadad asdsad\"   \r",
 };
 
 int main(const int argc, const char **argv)
