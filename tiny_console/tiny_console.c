@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include "tiny_console.h"
 #include "arg_checkers.h"
@@ -183,12 +184,15 @@ static uint32_t parse_arg_num(const char* str)
     CHECK_PTR(str, 0);
 
     uint32_t arg_num = 0;
+    uint8_t flag = 1;
 
     while (*str) {
         if ('\n' == *(str + 1) || '\0' == *(str + 1))
             return arg_num;
-        else if (' ' == *str && ' ' != *(str + 1))
-            arg_num++;
+        else if ('"' == *str) {
+            flag = !flag;
+        } else if (' ' == *str && ' ' != *(str + 1))
+            arg_num += flag;
 
         str++;
     }
@@ -293,8 +297,12 @@ static int console_execute(console_t* this)
         CHECK_PTR(arg_arr, -ENOMEM);
 
         // replace all spaces to \0
+        uint8_t flag = 0;
         for (char* ch = first_arg; '\0' != *ch; ch++) {
-            if (' ' == *ch)
+            if ('"' == *ch) {
+                *ch = '\0';
+                flag = !flag;
+            } else if ((' ' == *ch) && (0 == flag))
                 *ch = '\0';
         }
 
@@ -349,7 +357,8 @@ static int console_execute(console_t* this)
                 cur_arg++;
 
             // skip \0
-            cur_arg++;
+            while ('\0' == *cur_arg)
+                cur_arg++;
         }
     }
 
