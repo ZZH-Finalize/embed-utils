@@ -1,2 +1,0 @@
-option('embed-utils-tests', type: 'boolean', value: false)
-option('native', type: 'boolean', value: false)

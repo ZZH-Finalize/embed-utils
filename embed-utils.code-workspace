@@ -5,13 +5,10 @@
         }
     ],
     "settings": {
-        "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
-        "C_Cpp.default.compileCommands": "builddir/compile_commands.json",
         "C_Cpp.formatting": "clangFormat",
-        "C_Cpp.intelliSenseEngine": "disabled",
         "clangd.onConfigChanged": "restart",
         "clangd.arguments": [
-            "--compile-commands-dir=builddir",
+            "--compile-commands-dir=build",
             "--function-arg-placeholders=1",
             "--header-insertion=iwyu", //enable: iwyu, disable: never
             "--clang-tidy",
@@ -26,24 +23,18 @@
         "files.associations": {
             "*.s": "arm"
         },
-        "mesonbuild.configureOptions": [
-            "--buildtype",
-            "debug",
-            "-Dnative=true",
-            "-Dwarning_level=3"
-        ]
+        "xmake.enableSyntaxCheck": true
     },
     "tasks": {
         "version": "2.0.0",
         "tasks": [
             {
-                "label": "meson - build",
-                "type": "meson",
-                "mode": "build",
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
-                },
+                "label": "build",
+                "type": "shell",
+                "command": "xmake",
+                "args": [
+                    "b"
+                ],
                 "problemMatcher": {
                     "base": "$gcc",
                     "fileLocation": [
@@ -55,12 +46,18 @@
                     "focus": true,
                     "clear": true
                 },
-                "target": "main_size:run"
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                }
             },
             {
-                "label": "meson - clean",
-                "type": "meson",
-                "mode": "clean",
+                "label": "clean",
+                "type": "shell",
+                "command": "xmake",
+                "args": [
+                    "clean"
+                ],
                 "isBackground": true,
                 "presentation": {
                     "clear": true,
@@ -74,12 +71,12 @@
                 // }
             },
             {
-                "label": "meson - run",
+                "label": "run",
                 "type": "shell",
-                "command": [
-                    "./builddir/main"
+                "command": "xmake",
+                "args": [
+                    "run"
                 ],
-                "isBackground": true,
                 "presentation": {
                     "clear": true,
                     "close": false,
@@ -101,8 +98,8 @@
                 "name": "main",
                 "type": "cppdbg",
                 "request": "launch",
-                "program": "${workspaceFolder}/builddir/main.exe",
-                "cwd": "${workspaceFolder}/builddir",
+                "program": "${workspaceFolder}/build/mingw/x86_64/debug/main.exe",
+                "cwd": "${workspaceFolder}/build",
                 "environment": [],
                 "externalConsole": true,
                 "MIMode": "gdb",
@@ -123,7 +120,8 @@
         "recommendations": [
             "ms-vscode.cpptools",
             "ms-vscode.vscode-embedded-tools",
-            "mesonbuild.mesonbuild",
+            "llvm-vs-code-extensions.vscode-clangd",
+            "tboox.xmake-vscode",
         ]
     }
 }
