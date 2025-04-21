@@ -1,6 +1,6 @@
 -- project options
 option('native')
-    set_default(true)
+    set_default(false)
     set_showmenu(true)
     set_description('build native test code')
 

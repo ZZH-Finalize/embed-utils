@@ -30,7 +30,7 @@ target('embed-utils')
     )
     
     -- add source files
-    add_files('**.c|test_cases/**.c')
+    add_files('**.c|test_cases/**.c|main.c')
     
     -- add test files when enabled
     if has_config('ENABLE_TEST_CASES') then
