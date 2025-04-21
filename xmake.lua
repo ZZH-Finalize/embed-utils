@@ -21,8 +21,11 @@ set_languages('gnu23')
 set_warnings('everything')
 
 -- includes
-add_includedirs('.')
-add_includedirs('test_cases')
+add_includedirs(
+    '.',
+    'test_cases',
+    {public = true}
+)
 
 -- targets
 target('embed-utils')
