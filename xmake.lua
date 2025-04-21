@@ -3,18 +3,7 @@ set_project('embed-utils')
 set_version('0.1')
 set_license('GPL-3.0')
 
--- project options
-option('embed-utils-tests')
-    set_default(false)
-    set_showmenu(true)
-    set_description('Enable embed-utils tests')
-option_end()
-
-option('native')
-    set_default(true)
-    set_showmenu(true)
-    set_description('Enable native build')
-option_end()
+includes('options.lua')
 
 -- global settings
 set_languages('gnu23')
@@ -30,12 +19,21 @@ add_includedirs(
 -- targets
 target('embed-utils')
     set_kind('static')
+
+    add_options(
+        'ENABLE_TEST_CASES',
+        'TESTCASE_POOL_SIZE',
+        'CHECK_TESTCASE_MEMPOOL',
+        'ENABLE_DEMO',
+        'DEFAULT_POOL_SIZE',
+        'BUILTIN_CMD_ENABLE'
+    )
     
     -- add source files
     add_files('**.c|test_cases/**.c')
     
     -- add test files when enabled
-    if has_config('embed-utils-tests') then
+    if has_config('ENABLE_TEST_CASES') then
         add_files('test_cases/**.c')
     end
 

@@ -7,13 +7,13 @@
 
 static uint32_t __mem0__[CONFIG_DEFAULT_POOL_SIZE * 1024 / 4];
 
-#if CONFIG_ENABLE_TEST_CASES == 1
+#ifdef CONFIG_ENABLE_TEST_CASES
 static uint32_t __mem_test_case__[CONFIG_TESTCASE_POOL_SIZE * 1024 / 4];
 #endif
 
 MemPool_t __MemPools__[] = {
     PoolByArray(MEMPOOL_DEFAULT, __mem0__),
-#if CONFIG_ENABLE_TEST_CASES == 1
+#ifdef CONFIG_ENABLE_TEST_CASES
     PoolByArray(MEMPOOL_TESTCASE, __mem_test_case__),
 #endif
 };

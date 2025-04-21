@@ -18,7 +18,7 @@ typedef struct
     __test_case_fn_t fn;
 } __test_case_info_t;
 
-#if CONFIG_ENABLE_TEST_CASES == 1
+#ifdef CONFIG_ENABLE_TEST_CASES
 #define EXPORT_TEST_CASE_LEVEL(fn, level) \
     EXPORT_FUNC_WITH_NAME_LEVEL(fn, __test_case_fn_t, test_cases, level)
 #else
@@ -26,7 +26,7 @@ typedef struct
     GNU_UNUSED __test_case_fn_t __ptr_to_##fn##_##level = fn
 #endif
 
-#if CONFIG_ENABLE_DEMO == 1
+#ifdef CONFIG_ENABLE_DEMO
 #define EXPORT_DEMO_LEVEL(fn, level) \
     EXPORT_FUNC_WITH_LEVEL(fn, __demo_fn_t, demo, level)
 #else

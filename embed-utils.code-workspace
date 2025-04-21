@@ -21,7 +21,8 @@
             // "--pretty",
         ],
         "files.associations": {
-            "*.s": "arm"
+            "*.s": "arm",
+            "*.lua": "xmake"
         },
         "xmake.enableSyntaxCheck": true
     },

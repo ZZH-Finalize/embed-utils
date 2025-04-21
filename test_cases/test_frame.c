@@ -21,7 +21,7 @@ uint32_t run_all_testcases(test_case_arg_t* arg)
 {
     CHECK_PTR(arg, -EINVAL);
 
-#if CONFIG_ENABLE_TEST_CASES == 1
+#ifdef CONFIG_ENABLE_TEST_CASES
     uint32_t succ_count = 0;
     uint32_t test_case_num = get_all_testcases_num();
 
@@ -30,7 +30,7 @@ uint32_t run_all_testcases(test_case_arg_t* arg)
         arg->print("Running test case: %s\r\n", test_case_info->name);
         int retv = test_case_info->fn(arg);
         arg->print("Return value: %d\r\n", retv);
-#if CONFIG_CHECK_TESTCASE_MEMPOOL == 1
+#ifdef CONFIG_CHECK_TESTCASE_MEMPOOL
         uint8_t isClean = memIsClean(CONFIG_TEST_CASE_MEMPOOL);
         const char* fmt = isClean ? "clean" : "dirty";
 

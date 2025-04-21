@@ -30,7 +30,7 @@
     EXPORT_CONSOLE_CMD_IN_SEC(CONSOLE_CMD_SECTION, cmd, fn, desc, arg_desc, \
                               ##__VA_ARGS__)
 
-#if 1 == CONFIG_CONSOLE_BUILTIN_CMD_ENABLE
+#ifdef CONFIG_CONSOLE_BUILTIN_CMD_ENABLE
 #define EXPORT_CONSOLE_BUILTIN_CMD(cmd, fn, desc, arg_desc, ...)          \
     EXPORT_CONSOLE_CMD_IN_SEC(CONSOLE_BUILTIN_CMD_SECTION, cmd, fn, desc, \
                               arg_desc, ##__VA_ARGS__)
