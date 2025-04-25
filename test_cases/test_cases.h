@@ -4,8 +4,6 @@
 #include "test_case_conf.h"
 #include "mem_mana/mem_pools.h"
 
-#include "hash/hash_all_test.h"
-
 #ifndef CONFIG_TEST_CASE_MEMPOOL
 #define CONFIG_TEST_CASE_MEMPOOL MEMPOOL_TESTCASE
 #endif // CONFIG_TEST_CASE_MEMPOOL

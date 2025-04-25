@@ -80,23 +80,23 @@ SECTIONS
   {
     *(.rdata)
 	     *(SORT(.rdata$*))
-    . = ALIGN(4);
-  
+
+    . = ALIGN(16);
     __sinit_func = .;
     KEEP(*(SORT(.init_func.*)));
     __einit_func = .;
 
-    . = ALIGN(4);
+    . = ALIGN(16);
     __stest_cases = .;
     KEEP(*(SORT(.test_cases.*)));
     __etest_cases = .;
 
-    . = ALIGN(4);
+    . = ALIGN(16);
     __sdemo = .;
     KEEP(*(SORT(.demo.*)));
     __edemo = .;
 
-    . = ALIGN(4);
+    . = ALIGN(16);
     __sconsole_cmd = .;
     KEEP(*(.console.cmd));
     KEEP(*(.console.builtin.cmd));

@@ -49,6 +49,8 @@ typedef struct __console_t
     uint32_t mem_pool;
     uint32_t cur_idx;
 
+    void* private;
+
     union
     {
         struct
@@ -82,6 +84,20 @@ static inline void console_delete(console_t* this)
     memFree(this->rxbuf);
     memFree(this->cmdbuf);
     memFree(this);
+}
+
+static inline void console_bind_data(console_t* this, void* data)
+{
+    CHECK_PTR(this, );
+
+    this->private = data;
+}
+
+static inline void* console_get_data(console_t* this)
+{
+    CHECK_PTR(this, NULL);
+
+    return this->private;
 }
 
 static inline int console_flush(console_t* this)

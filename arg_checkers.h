@@ -28,4 +28,13 @@
 #define CHECK_IN_CLOSED_RANGE(val, left, right, retv) \
     RETURN_IF((val) <= (right) && (val) >= (left), retv)
 
+// compile time checkers
+#if __STDC_VERSION__ >= 201112L && !defined __cplusplus
+#define static_assert(x) _Static_assert(x)
+#else
+#define static_assert(x)
+#endif
+
+#define CHECK_SIZE_STATIC(obj, size) static_assert(size == sizeof(obj))
+
 #endif // __ARG_CHECKERS_H__

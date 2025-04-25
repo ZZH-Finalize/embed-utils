@@ -8,9 +8,7 @@
 #include "arg_checkers.h"
 #include "mem_mana/mem_mana.h"
 
-#define BITMAP_CHECK_MAP(map, retv) \
-    CHECK_PTR(map, retv);           \
-    CHECK_PTR(map->buf, retv)
+#define BITMAP_CHECK_MAP(map, retv) CHECK_PTR(map, retv)
 
 typedef struct
 {

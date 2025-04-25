@@ -30,19 +30,32 @@
         "version": "2.0.0",
         "tasks": [
             {
+                "label": "xmake-build cdb",
+                "type": "shell",
+                "command": "xmake",
+                "args": [
+                    "project",
+                    "-k",
+                    "compile_commands",
+                    "--lsp=clangd",
+                    "build"
+                ],
+                "isBackground": true,
+                "presentation": {
+                    "clear": true,
+                    "close": true,
+                    "reveal": "silent",
+                    "panel": "shared"
+                },
+            },
+            {
                 "label": "build",
                 "type": "shell",
                 "command": "xmake",
                 "args": [
                     "b"
                 ],
-                "problemMatcher": {
-                    "base": "$gcc",
-                    "fileLocation": [
-                        "relative",
-                        "${workspaceFolder}/builddir"
-                    ]
-                },
+                "problemMatcher": "$gcc",
                 "presentation": {
                     "focus": true,
                     "clear": true
@@ -99,10 +112,10 @@
                 "name": "main",
                 "type": "cppdbg",
                 "request": "launch",
-                "program": "${workspaceFolder}/build/mingw/x86_64/debug/main.exe",
+                "program": "${workspaceFolder}/build/cross/x86_64/debug/main.exe",
                 "cwd": "${workspaceFolder}/build",
                 "environment": [],
-                "externalConsole": true,
+                "externalConsole": false,
                 "MIMode": "gdb",
                 "miDebuggerPath": "gdb",
                 // "launchCompleteCommand": "exec-continue",
