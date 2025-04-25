@@ -2,6 +2,7 @@
 #define __TEST_FRAME_H__
 
 #include "test_cases.h"
+#include <stddef.h>
 
 size_t run_all_testcases(test_case_arg_t* arg);
 size_t get_all_testcases_num(void);

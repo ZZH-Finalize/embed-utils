@@ -1,4 +1,8 @@
 -- project options
+option('toolchain')
+    set_default('gcc')
+    set_description('select compile toolchain')
+
 option('native')
     set_default(false)
     set_showmenu(true)

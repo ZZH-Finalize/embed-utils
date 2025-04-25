@@ -6,7 +6,7 @@ add_rules('mode.debug', 'mode.release')
 
 includes('options.lua')
 
-set_toolchains('gcc')
+set_toolchains('$(toolchain)')
 set_defaultplat('cross')
 
 -- global settings
