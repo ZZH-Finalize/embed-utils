@@ -15,14 +15,14 @@
             "--all-scopes-completion",
             "--enable-config",
             "--cross-file-rename",
-            "--background-index",
             "--query-driver=D:/mingw64/bin/gcc.exe",
             // "--log=verbose",
             // "--pretty",
         ],
         "files.associations": {
             "*.s": "arm",
-            "*.lua": "xmake"
+            "*.lua": "xmake",
+            "*.h": "c"
         },
         "xmake.enableSyntaxCheck": true
     },

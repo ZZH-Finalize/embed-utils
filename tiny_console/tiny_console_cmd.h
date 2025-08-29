@@ -6,7 +6,8 @@
 
 #define CONSOLE_CMD_DEF(name)                        \
     GNU_USED                                         \
-    static int name(console_t* this, const int argc, const console_cmd_arg_t* argv)
+    static int name(console_t *this, const int argc, \
+                    const console_cmd_arg_t *argv)
 
 #define CONSOLE_CMD_UNUSE_ARGS \
     (void) this;               \
@@ -18,8 +19,8 @@
 
 #define EXPORT_CONSOLE_CMD_IN_SEC(sec, _cmd, _fn, _desc, _arg_desc, ...) \
     GNU_USED_SECTION(sec)                                                \
-    static const console_cmd_desc_t __console_cmd_desc_##_fn = {         \
-        .cmd = _cmd,                                                     \
+    static const console_cmd_desc_t __console_cmd_desc_##_cmd = {        \
+        .cmd = #_cmd,                                                    \
         .desc = _desc,                                                   \
         .fn = _fn,                                                       \
         .arg_desc = _arg_desc,                                           \
@@ -30,13 +31,18 @@
     EXPORT_CONSOLE_CMD_IN_SEC(CONSOLE_CMD_SECTION, cmd, fn, desc, arg_desc, \
                               ##__VA_ARGS__)
 
+#define EXPORT_CONSOLE_CMD_FN(fn, desc, arg_desc, ...) \
+    EXPORT_CONSOLE_CMD(fn, fn, desc, arg_desc, ##__VA_ARGS__)
+
 #ifdef CONFIG_CONSOLE_BUILTIN_CMD_ENABLE
 #define EXPORT_CONSOLE_BUILTIN_CMD(cmd, fn, desc, arg_desc, ...)          \
     EXPORT_CONSOLE_CMD_IN_SEC(CONSOLE_BUILTIN_CMD_SECTION, cmd, fn, desc, \
                               arg_desc, ##__VA_ARGS__)
+
+#define EXPORT_CONSOLE_BUILTIN_CMD_FN(fn, desc, arg_desc, ...) \
+    EXPORT_CONSOLE_BUILTIN_CMD(fn, fn, desc, arg_desc, ##__VA_ARGS__)
 #else
-#define EXPORT_CONSOLE_BUILTIN_CMD(cmd, fn, desc, ...) \
-    GNU_UNUSED console_cmd_desc_t* __ptr_to_##fn = NULL
+#define EXPORT_CONSOLE_BUILTIN_CMD_NAME(cmd, fn, desc, ...)
 #endif
 
 #endif // __TINY_CONSOLE_CMD_H__
