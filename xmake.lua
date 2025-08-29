@@ -6,7 +6,11 @@ add_rules('mode.debug', 'mode.release')
 
 includes('options.lua')
 
-set_toolchains('gcc', {plat = os.host(), arch = os.arch()})
+if has_config('toolchain') then
+    set_toolchains('$(toolchain)')
+else
+    set_toolchains('gcc')
+end
 
 -- global settings
 set_languages('gnu23')
