@@ -7,8 +7,6 @@ add_rules('mode.debug', 'mode.release')
 includes('options.lua')
 
 set_toolchains('gcc', {plat = os.host(), arch = os.arch()})
-set_defaultplat('windows')
-set_defaultarchs('x64')
 
 -- global settings
 set_languages('gnu23')
