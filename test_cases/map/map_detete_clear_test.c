@@ -1,6 +1,6 @@
 #include "map_test_data.h"
 
-static int map_delete_test(test_case_arg_t *arg)
+DEFINE_TESTCASE(map_delete_test)
 {
     (void) arg;
 
@@ -34,5 +34,3 @@ data_err:
 
     return retv;
 }
-
-EXPORT_TEST_CASE(map_delete_test);

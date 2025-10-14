@@ -1,6 +1,6 @@
 #include "map_test_data.h"
 
-static int map_duplcate_key_test(test_case_arg_t* arg)
+DEFINE_TESTCASE(map_duplcate_key_test)
 {
     (void) arg;
     const char* test_key = "test_key";
@@ -29,5 +29,3 @@ clean_exit:
     map_delete(map);
     return retv;
 }
-
-EXPORT_TEST_CASE(map_duplcate_key_test);

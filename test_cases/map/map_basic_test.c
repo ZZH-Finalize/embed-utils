@@ -1,6 +1,6 @@
 #include "map_test_data.h"
 
-static int map_basic_test(test_case_arg_t *arg)
+DEFINE_TESTCASE(map_basic_test)
 {
     (void) arg;
 
@@ -36,5 +36,3 @@ map_err:
 data_err:
     return retv;
 }
-
-EXPORT_TEST_CASE(map_basic_test);

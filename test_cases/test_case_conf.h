@@ -5,8 +5,8 @@
 
 typedef struct
 {
-    int (*print)(const char* fmt, ...);
-    void* args;
+    int (*print)(const char *fmt, ...);
+    void *args;
 } test_case_arg_t;
 
 typedef int (*__test_case_fn_t)(test_case_arg_t *arg);
@@ -36,5 +36,13 @@ typedef struct
 
 #define EXPORT_TEST_CASE(fn) EXPORT_TEST_CASE_LEVEL(fn, 9)
 #define EXPORT_DEMO(fn)      EXPORT_DEMO_LEVEL(fn, 9)
+
+#define __DEFINE_EXPORT(ret_t, fn, exp)         \
+    static ret_t fn(test_case_arg_t *arg); \
+    exp(fn);                             \
+    static ret_t fn(test_case_arg_t *arg)
+
+#define DEFINE_TESTCASE(fn) __DEFINE_EXPORT(int, fn, EXPORT_TEST_CASE)
+#define DEFINE_DEMO(fn)     __DEFINE_EXPORT(void, fn, EXPORT_DEMO)
 
 #endif // __TEST_CASE_CONF_H__

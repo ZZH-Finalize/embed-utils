@@ -112,7 +112,7 @@
                 "name": "main",
                 "type": "cppdbg",
                 "request": "launch",
-                "program": "${workspaceFolder}/build/cross/x86_64/debug/main.exe",
+                "program": "${workspaceFolder}/build/mingw/x86_64/debug/main.exe",
                 "cwd": "${workspaceFolder}/build",
                 "environment": [],
                 "externalConsole": false,

@@ -12,7 +12,7 @@ static hash_func_table_t hash_funcs[] = {
     {"ap_hash",   ap_hash  },
 };
 
-static void str_hash_demo(test_case_arg_t *arg)
+DEFINE_DEMO(str_hash_demo)
 {
     const char *test_str = "[]{};',./:\"<>?"
                            "widfjonclnfdoewn;lal"
@@ -23,5 +23,3 @@ static void str_hash_demo(test_case_arg_t *arg)
         arg->print("%s: %ld\r\n", hash_info->name, hash_info->func(test_str));
     }
 }
-
-EXPORT_DEMO(str_hash_demo);

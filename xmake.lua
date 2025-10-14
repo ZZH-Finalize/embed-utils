@@ -3,8 +3,12 @@ set_project('embed-utils')
 set_version('0.1')
 set_license('GPL-3.0')
 add_rules('mode.debug', 'mode.release')
+add_rules('plugin.compile_commands.autoupdate', {outputdir = '$(builddir)'})
 
 includes('options.lua')
+
+set_defaultplat('cross')
+set_defaultmode('debug')
 
 if has_config('toolchain') then
     set_toolchains('$(toolchain)')

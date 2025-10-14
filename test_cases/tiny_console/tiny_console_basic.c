@@ -66,7 +66,7 @@ const char *test_cases[] = {
     "printf      1    2 3  \"sadad asdsad\"   \r",
 };
 
-static int console_basic(test_case_arg_t *arg)
+DEFINE_TESTCASE(console_basic)
 {
     console_cmd_desc_t desc = {
         .cmd = "printf",
@@ -101,5 +101,3 @@ static int console_basic(test_case_arg_t *arg)
 
     return 0;
 }
-
-EXPORT_TEST_CASE(console_basic);
