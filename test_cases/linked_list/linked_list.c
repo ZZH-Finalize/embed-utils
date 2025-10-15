@@ -86,7 +86,9 @@ DEFINE_TESTCASE(ll_iter)
     }
 
     TEST_ASSERT(NULL == head->node.next, "next is not cleared");
-    TEST_ASSERT(LIST_TEST_LEN == count, "iterator does not run %d times, count: %d", LIST_TEST_LEN, count);
+    TEST_ASSERT(LIST_TEST_LEN == count,
+                "iterator does not run %d times, count: %d", LIST_TEST_LEN,
+                count);
 
     return 0;
 }

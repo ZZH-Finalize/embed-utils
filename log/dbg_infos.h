@@ -23,12 +23,12 @@
     DBG_PRINT_VAR_RAW(var)      \
     DBG_INFO_OUTPUT("\r\n")
 
-#define DBG(x)                               \
-    ({                                       \
-        const typeof(x) val = x;             \
+#define DBG(x)                     \
+    ({                             \
+        const typeof(x) val = x;   \
         DBG_INFO_OUTPUT(#x " = "); \
-        DBG_PRINT_VAR_RAW(val);              \
-        val;                                 \
+        DBG_PRINT_VAR_RAW(val);    \
+        val;                       \
     })
 
 #endif // __DBG_INFOS_H__

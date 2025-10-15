@@ -49,7 +49,7 @@
  * @return true: value is power of 2
  * @return false: value is not power of 2
  */
-#define IS_POW_OF_2(value) (((value) & ((value) -1)) == 0)
+#define IS_POW_OF_2(value) (((value) & ((value) - 1)) == 0)
 
 /**
  * @brief find first 1

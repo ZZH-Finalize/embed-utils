@@ -30,11 +30,8 @@ typedef struct
     uint32_t availableSize;
 } MemPool_t, *pMemPool_t;
 
-#define MemEnd(mem) (mem + ARRAY_SIZE(mem))
-#define ArrayMem(arr)                     \
-    {                                     \
-        (pMemBlock_t) arr, MemEnd(arr), 0 \
-    }
+#define MemEnd(mem)            (mem + ARRAY_SIZE(mem))
+#define ArrayMem(arr)          {(pMemBlock_t) arr, MemEnd(arr), 0}
 
 #define PoolByArray(pool, arr) [pool] = ArrayMem(arr)
 

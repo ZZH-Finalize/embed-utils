@@ -32,7 +32,8 @@ static inline uint32_t list_length(list_node_t *head)
 
     uint32_t len = 0;
 
-    ITER_LIST (_, head) len++;
+    ITER_LIST (_, head)
+        len++;
 
     return len;
 }
@@ -41,7 +42,8 @@ static inline list_node_t *list_find_last_node(list_node_t *head)
 {
     CHECK_PTR(head, NULL);
 
-    while (NULL != head->next) head = head->next;
+    while (NULL != head->next)
+        head = head->next;
 
     return head;
 }
@@ -52,7 +54,8 @@ static inline list_node_t *list_index(list_node_t *head, uint32_t index)
 
     list_node_t *node = head;
 
-    while (0 != index-- && NULL != node) node = node->next;
+    while (0 != index-- && NULL != node)
+        node = node->next;
 
     return node;
 }
@@ -83,7 +86,8 @@ static inline void list_remove(list_node_t *head, list_node_t *node)
     CHECK_PTR(head, );
     CHECK_PTR(node, );
 
-    while (node != head->next && head != NULL) head = head->next;
+    while (node != head->next && head != NULL)
+        head = head->next;
 
     CHECK_PTR(head, );
 

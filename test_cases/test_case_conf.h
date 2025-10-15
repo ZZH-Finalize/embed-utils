@@ -28,9 +28,9 @@
 #define EXPORT_TEST_CASE(fn) EXPORT_TEST_CASE_LEVEL(fn, 9)
 #define EXPORT_DEMO(fn)      EXPORT_DEMO_LEVEL(fn, 9)
 
-#define __DEFINE_EXPORT(ret_t, fn, exp)         \
+#define __DEFINE_EXPORT(ret_t, fn, exp)    \
     static ret_t fn(test_case_arg_t *arg); \
-    exp(fn);                             \
+    exp(fn);                               \
     static ret_t fn(test_case_arg_t *arg)
 
 #define DEFINE_TESTCASE(fn) __DEFINE_EXPORT(int, fn, EXPORT_TEST_CASE)

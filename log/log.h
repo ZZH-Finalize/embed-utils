@@ -21,7 +21,8 @@ extern log_level_t __current_level;
 
 // todo: add console color support
 
-#define __LOG_OUTPUT(level, msg, ...) log_output(LOG_LEVEL_##level, msg, ##__VA_ARGS__)
+#define __LOG_OUTPUT(level, msg, ...) \
+    log_output(LOG_LEVEL_##level, msg, ##__VA_ARGS__)
 
 // LOG_API
 #define LOG_ERROR(msg, ...)    \

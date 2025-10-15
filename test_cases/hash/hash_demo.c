@@ -2,6 +2,7 @@
 #include "iterators.h"
 #include "test_frame.h"
 
+// clang-format off
 static hash_func_table_t hash_funcs[] = {
     HASH_FUNC_ITEM(bkdr_hash),
     HASH_FUNC_ITEM(sdbm_hash),
@@ -12,6 +13,7 @@ static hash_func_table_t hash_funcs[] = {
     HASH_FUNC_ITEM(djb_hash),
     HASH_FUNC_ITEM(ap_hash),
 };
+// clang-format on
 
 DEFINE_DEMO(str_hash_demo)
 {
