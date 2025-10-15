@@ -1,6 +1,8 @@
 #ifndef __LINKED_LIST_H__
 #define __LINKED_LIST_H__
 
+#include <errno.h>
+#include "arg_checkers.h"
 #include "linked_list_common.h"
 
 typedef struct __list_node_t
@@ -14,6 +16,7 @@ typedef int (*list_foreach_cb)(list_node_t *);
 static inline int list_foreach(list_node_t *head, list_foreach_cb callback)
 {
     CHECK_PTR(head, -EINVAL);
+    RETURN_IF(head == head->next, -EINVAL);
 
     ITER_LIST (node, head) {
         int cb_retv = callback(node);

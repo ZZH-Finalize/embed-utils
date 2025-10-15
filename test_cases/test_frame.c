@@ -5,6 +5,8 @@
 #include "arg_checkers.h"
 #include "iterators.h"
 #include "mem_mana/mem_mana.h"
+#include "test_logging.h"
+#include "console_color.h"
 
 LINKER_SYMBOL_TYPE(__stest_cases, __test_case_info_t);
 LINKER_SYMBOL_TYPE(__etest_cases, __test_case_info_t);
@@ -31,7 +33,17 @@ size_t run_all_testcases(test_case_arg_t* arg)
 
         TEST_INFO("Running test case: %s", test_case_info->name);
         int retv = test_case_info->fn(arg);
-        TEST_INFO("Return value: %d", retv);
+
+        if (0 != retv) {
+            TEST_INFO("%s is " CONSOLE_COLORED_STR(
+                          "FAILED", CONCOLE_COLOR_RED,
+                          CONCOLE_COLOR_BLACK) " with return value: %d",
+                      test_case_info->name, retv);
+        } else {
+            TEST_INFO("%s is " CONSOLE_COLORED_STR("PASS", CONCOLE_COLOR_GREEN,
+                                                   CONCOLE_COLOR_BLACK),
+                      test_case_info->name);
+        }
 
 #ifdef CONFIG_CHECK_TESTCASE_MEMPOOL
         uint8_t isClean = memIsClean(CONFIG_TEST_CASE_MEMPOOL);

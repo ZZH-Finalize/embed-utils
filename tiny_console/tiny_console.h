@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdarg.h>
+#include "console_color.h"
 #include "tiny_console_conf.h"
 #include "arg_checkers.h"
 #include "gnu_attributes.h"
@@ -122,7 +123,7 @@ int console_vprintf(console_t* this, const char* fmt, va_list vargs);
 static inline int console_set_color(console_t* this, console_color_t font_color,
                                     console_color_t back_color)
 {
-    char buf[] = {"\033[4\0;3\0m"};
+    char buf[] = {CONSOLE_COLOR_SEQ(CONCOLE_COLOR_WHITE, CONCOLE_COLOR_BLACK)};
     buf[6] = font_color;
     buf[3] = back_color;
     return console_send_str(this, buf);
@@ -130,7 +131,7 @@ static inline int console_set_color(console_t* this, console_color_t font_color,
 
 static inline int console_cancel_color(console_t* this)
 {
-    return console_send_str(this, "\033[0m");
+    return console_send_str(this, CONSOLE_COLOR_SEQ_END);
 }
 
 void console_display_prefix(console_t* this);
