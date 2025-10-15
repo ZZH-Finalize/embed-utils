@@ -1,5 +1,4 @@
 #include "test_frame.h"
-#include "test_cases.h"
 #include "bitmap_test_conf.h"
 #include "bitmap/bitmap.h"
 

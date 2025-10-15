@@ -3,8 +3,9 @@
 
 #include <stddef.h>
 
-#define ITER_LIST(iter_name, head)                         \
-    for (typeof(head) iter_name = head; NULL != iter_name; \
-         iter_name = iter_name->next)
+#define ITER_LIST(iter_name, head)                             \
+    for (typeof(head) iter_name = head, __next = NULL;         \
+         (NULL != iter_name) && (__next = iter_name->next, 1); \
+         iter_name = __next)
 
 #endif // __LIST_ITERATORS_H__

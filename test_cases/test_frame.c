@@ -29,16 +29,16 @@ size_t run_all_testcases(test_case_arg_t* arg)
     FOR_I (test_case_num) {
         __test_case_info_t* test_case_info = &__stest_cases[i];
 
-        arg->print("Running test case: %s\r\n", test_case_info->name);
+        TEST_INFO("Running test case: %s", test_case_info->name);
         int retv = test_case_info->fn(arg);
-        arg->print("Return value: %d\r\n", retv);
+        TEST_INFO("Return value: %d", retv);
 
 #ifdef CONFIG_CHECK_TESTCASE_MEMPOOL
         uint8_t isClean = memIsClean(CONFIG_TEST_CASE_MEMPOOL);
-        arg->print("Memory pool is %s!\r\n", isClean ? "clean" : "dirty");
+        TEST_INFO("Memory pool is %s!", isClean ? "clean" : "dirty");
 #endif
 
-        arg->print("\r\n");
+        TEST_PRINT_RAW("\r\n");
         succ_count += retv == 0;
     }
 

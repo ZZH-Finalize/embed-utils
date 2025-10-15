@@ -1,7 +1,7 @@
 #include "mem_mana/mem_pools.h"
 #include "test_case_conf.h"
 #include "test_frame.h"
-#include "test_cases.h"
+#include "test_logging.h"
 #include "tiny_console/tiny_console.h"
 #include "tiny_console/tiny_console_cmd.h"
 #include "iterators.h"
@@ -11,7 +11,7 @@ int console_write(console_t *this, const char *buf, uint32_t len)
     test_case_arg_t *arg = console_get_data(this);
 
     FOR_I (len) {
-        arg->print("%c", buf[i]);
+        TEST_PRINT_RAW("%c", buf[i]);
     }
 
     return 0;

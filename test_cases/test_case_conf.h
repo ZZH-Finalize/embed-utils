@@ -1,22 +1,13 @@
 #ifndef __TEST_CASE_CONF_H__
 #define __TEST_CASE_CONF_H__
 
+#include "test_typedef.h"
 #include "linker_tools.h"
+#include "mem_mana/mem_pools.h"
 
-typedef struct
-{
-    int (*print)(const char *fmt, ...);
-    void *args;
-} test_case_arg_t;
-
-typedef int (*__test_case_fn_t)(test_case_arg_t *arg);
-typedef void (*__demo_fn_t)(test_case_arg_t *arg);
-
-typedef struct
-{
-    const char *name;
-    __test_case_fn_t fn;
-} __test_case_info_t;
+#ifndef CONFIG_TEST_CASE_MEMPOOL
+#define CONFIG_TEST_CASE_MEMPOOL MEMPOOL_TESTCASE
+#endif // CONFIG_TEST_CASE_MEMPOOL
 
 #ifdef CONFIG_ENABLE_TEST_CASES
 #define EXPORT_TEST_CASE_LEVEL(fn, level) \
